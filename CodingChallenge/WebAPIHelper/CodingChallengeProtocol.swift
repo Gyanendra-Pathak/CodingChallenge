@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 protocol CallServiceProtocol {
-    func getApiResponse(afterPaging:String, completion: @escaping ((_ testType:Bool, _ status:Bool, _ message:String?, _ data:PicModel?, _ error:ApiError?) -> Void))
+    func getApiResponse(serviceURL: String, completion: @escaping ((_ testType: Bool, _ status: Bool, _ message: String?, _ data: FeedModel?, _ error: ApiError?) -> Void))
 }

@@ -5,7 +5,6 @@
 //  Created by Gyanendra Kumar Pathak on 19/08/21.
 //
 
-
 import UIKit
 
 enum ApiError {
@@ -21,27 +20,18 @@ enum  ApiResponse {
 class WebAPIHelper: NSObject {
     var task: URLSessionTask?
     static let sharedInstance = WebAPIHelper()
-
-    private override init() {
-    }
+    
+    private override init() {}
     /**********************------This is for Get request------**********************/
     
-     func callWebAPIGetRequest(afterPaging:String, CallBack: @escaping (_ data: Data?, _ error : ApiError?)->Void){
-        if Reachability.isConnectedToNetwork(){
-            var apiURL:String!
-            if afterPaging.isEmpty {
-                apiURL = Constant.kServiceURL
-            }
-            else{
-                apiURL = Constant.kServicePagingURL
-                apiURL = apiURL + afterPaging
-            }
-            let apiURLMain:String! = apiURL.replacingOccurrences(of: Constant.kSpace, with: Constant.kPercent20)
-            let finalUrl:URL! = URL(string: apiURLMain)
-            var urlRequest = URLRequest(url:finalUrl)
+    func callWebAPIGetRequest(serviceURL: String, CallBack: @escaping (_ data: Data?, _ error : ApiError?)->Void) {
+        if NetworkReachability.isConnectedToNetwork() {
+            let serviceURLMain: String! = serviceURL.replacingOccurrences(of: Constant.kSpace, with: Constant.kPercent20)
+            let finalUrl: URL! = URL(string: serviceURLMain)
+            var urlRequest = URLRequest(url: finalUrl)
             urlRequest.httpMethod = Constant.kGet
             urlRequest.timeoutInterval = TimeInterval(Constant.kTimeOut)
-
+            
             task = URLSession.shared.dataTask(with: urlRequest) {
                 (data: Data?, response: URLResponse?, error: Error?) in
                 
@@ -51,9 +41,9 @@ class WebAPIHelper: NSObject {
                         return
                     }
                     guard let _data = data
-                        else {
-                            CallBack(nil,ApiError.ServerError(message: Constant.kServerNotResponding))
-                            return
+                    else {
+                        CallBack(nil,ApiError.ServerError(message: Constant.kServerNotResponding))
+                        return
                     }
                     CallBack(_data, nil)
                 }
@@ -66,8 +56,8 @@ class WebAPIHelper: NSObject {
             }
         }
     }
-  
-   func cancelFetchResponse() {
+    
+    func cancelFetchResponse() {
         if let task = task {
             task.cancel()
         }

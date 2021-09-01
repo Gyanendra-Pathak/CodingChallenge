@@ -1,0 +1,27 @@
+//
+//  BorderView.swift
+//  CodingChallenge
+//
+//  Created by Gyanendra Kumar Pathak on 27/08/21.
+//
+
+import UIKit
+
+class BorderView: UIImageView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    func commonInit() {
+        self.clipsToBounds = true
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .lightGray
+    }
+}
